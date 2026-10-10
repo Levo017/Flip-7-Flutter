@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 
@@ -11,6 +12,10 @@ const _botDelay = Duration(milliseconds: 1000);
 /// Owns the running [Game], paces dealing and CPU turns, and holds the bits of
 /// UI state that depend on the game (focused hand, tentatively picked card).
 class GameController extends ChangeNotifier {
+  /// Pass a seeded [random] to make shuffles repeatable in tests.
+  GameController({this.random});
+
+  final Random? random;
   Game? game;
   bool fast = false;
   Timer? _timer;
@@ -20,7 +25,7 @@ class GameController extends ChangeNotifier {
   Prompt? _chosenFor;
 
   void start(List<PlayerConfig> players, {required bool brutal}) {
-    final g = Game(players, brutal: brutal);
+    final g = Game(players, brutal: brutal, random: random);
     game = g;
     _focusId = g.players.where((p) => !p.bot).firstOrNull?.id ?? 0;
     _changed();

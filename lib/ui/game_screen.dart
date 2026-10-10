@@ -309,7 +309,13 @@ class _PlayersPanel extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Winning score', style: sans(10, color: const Color(0xFF6F7A89))),
+                    Flexible(
+                      child: Text(
+                        'Winning score',
+                        overflow: TextOverflow.ellipsis,
+                        style: sans(10, color: const Color(0xFF6F7A89)),
+                      ),
+                    ),
                     Text('$targetScore', style: mono(17)),
                   ],
                 ),
@@ -1013,7 +1019,14 @@ class _Dock extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('BUST RISK', style: labelStyle(size: 9)),
+                      Flexible(
+                        child: Text(
+                          'BUST RISK',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: labelStyle(size: 9),
+                        ),
+                      ),
                       Text('$risk%', style: mono(10, color: const Color(0xFFE6A65E))),
                     ],
                   ),

@@ -38,24 +38,36 @@ String initials(String name) {
   return text.toUpperCase();
 }
 
+/// Whether to fetch DM Mono and Space Grotesk at runtime. Tests turn this off
+/// so that building a widget never starts a network request.
+bool downloadFonts = true;
+
 TextStyle mono(
   double size, {
   Color color = textColor,
   FontWeight weight = FontWeight.w500,
   double spacing = 0,
-}) => GoogleFonts.dmMono(
-  fontSize: size,
-  color: color,
-  fontWeight: weight,
-  letterSpacing: spacing,
-  height: 1.1,
-);
+}) {
+  final style = TextStyle(
+    fontSize: size,
+    color: color,
+    fontWeight: weight,
+    letterSpacing: spacing,
+    height: 1.1,
+  );
+  return downloadFonts
+      ? GoogleFonts.dmMono(textStyle: style)
+      : style.copyWith(fontFamily: 'monospace');
+}
 
 TextStyle sans(
   double size, {
   Color color = textColor,
   FontWeight weight = FontWeight.w400,
-}) => GoogleFonts.spaceGrotesk(fontSize: size, color: color, fontWeight: weight);
+}) {
+  final style = TextStyle(fontSize: size, color: color, fontWeight: weight);
+  return downloadFonts ? GoogleFonts.spaceGrotesk(textStyle: style) : style;
+}
 
 /// Small all-caps label used for panel titles and eyebrows.
 TextStyle labelStyle({Color color = muted, double size = 10}) =>
@@ -65,7 +77,7 @@ ThemeData buildTheme() {
   return ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: background,
-    fontFamily: GoogleFonts.spaceGrotesk().fontFamily,
+    fontFamily: downloadFonts ? GoogleFonts.spaceGrotesk().fontFamily : null,
     colorScheme: const ColorScheme.dark(primary: lime, surface: background),
   );
 }
